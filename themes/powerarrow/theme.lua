@@ -20,12 +20,12 @@ local theme                                     = {}
 theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/themes/powerarrow"
 --theme.wallpaper                                 = theme.dir .. "/wallpaper.jpg"
 theme.icon_theme                                = "Yaru"
-theme.icon_size                                 = dpi(1)
-theme.font                                      = "Noto Sans Regular 3"
-theme.font                                      = "Noto Sans Regular 3"
-theme.taglist_font                              = "Noto Sans Regular 3"
-theme.hotkeys_font                              = "Noto Sans Regular 3"
-theme.hotkeys_description_font                  = "Noto Sans Regular 3"
+theme.icon_size                                 = dpi(8)
+theme.font                                      = "Noto Sans Regular 10"
+theme.font                                      = "Noto Sans Regular 10"
+theme.taglist_font                              = "Noto Sans Regular 10"
+theme.hotkeys_font                              = "Noto Sans Regular 10"
+theme.hotkeys_description_font                  = "Noto Sans Regular 10"
 theme.hotkeys_border_width                      = dpi(2)
 theme.hotkeys_border_height                     = dpi(2)
 theme.hotkeys_border_color                      = "#BD93F9"
@@ -55,10 +55,10 @@ theme.titlebar_bg_normal                        = theme.bg_normal
 theme.titlebar_fg_focus                         = theme.fg_focus
 theme.menubar_fg_normal                         = "#FEFEFE"
 theme.menubar_bg_normal                         = "#44475a"
-theme.menu_font                                 = "Noto Sans Regular 4"
+theme.menu_font                                 = "Noto Sans Regular 8"
 theme.menu_fg_focus                             = "#FEFEFE"
-theme.menu_height                               = dpi(12)
-theme.menu_width                                = dpi(60)
+theme.menu_height                               = dpi(20)
+theme.menu_width                                = dpi(100)
 theme.menu_submenu_icon                         = theme.dir .. "/icons/submenu.png"
 theme.awesome_icon                              = theme.dir .. "/icons/awesome.png"
 theme.taglist_squares_sel                       = theme.dir .. "/icons/square_sel.png"
@@ -137,61 +137,21 @@ local clock = awful.widget.watch(
 theme.cal = lain.widget.cal({
     attach_to = { clock },
     notification_preset = {
-        font = "Noto Sans Mono Medium 2",
+        font = "Noto Sans Mono Medium 8",
         fg   = theme.fg_normal,
         bg   = theme.bg_normal
     }
 })
--- Taskwarrior
--- local task = wibox.widget.imagebox(theme.widget_task)
--- lain.widget.contrib.task.attach(task, {
-    -- do not colorize output
---    show_cmd = "task | sed -r 's/\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'"
--- })
--- task:buttons(my_table.join(awful.button({}, 1, lain.widget.contrib.task.prompt)))
-
--- Scissors (xsel copy and paste)
--- local scissors = wibox.widget.imagebox(theme.widget_scissors)
--- scissors:buttons(my_table.join(awful.button({}, 1, function() awful.spawn.with_shell("xsel | xsel -i -b") end)))
-
--- Mail IMAP check
---[[ commented because it needs to be set before use
-local mailicon = wibox.widget.imagebox(theme.widget_mail)
-mailicon:buttons(my_table.join(awful.button({ }, 1, function () awful.spawn(mail) end)))
-theme.mail = lain.widget.imap({
-    timeout  = 180,
-    server   = "server",
-    mail     = "mail",
-    password = "keyring get mail",
-    settings = function()
-        if mailcount > 0 then
-            widget:set_text(" " .. mailcount .. " ")
-            mailicon:set_image(theme.widget_mail_on)
-        else
-            widget:set_text("")
-            mailicon:set_image(theme.widget_mail)
-        end
-    end
-})
---]]
-
---Keybordlayous
+---Keybordlayous
 
 local kb = awful.widget.keyboardlayout:new ()
-
-
-----Spotify
-
-
-
-
 
 local red    = "#EB8F8F"
 
 -- ALSA volume bar
 local volicon = wibox.widget.imagebox(theme.vol)
 theme.volume = lain.widget.alsabar {
-    width = dpi(40), border_width = 0, ticks = true, ticks_size = dpi(6),
+    width = dpi(40), border_width = 0, ticks = true, ticks_size = dpi(8),
     notification_preset = { font = theme.font },
     --togglechannel = "IEC958,3",
     settings = function()
@@ -238,42 +198,6 @@ local volumewidget = wibox.container.margin(volumebg, dpi(1), dpi(3), dpi(2), dp
 
 
 
-
--- MEM
-local memicon = wibox.widget.imagebox(theme.widget_mem)
-local mem = lain.widget.mem({
-    settings = function()
-        widget:set_markup(markup.font(theme.font, " " .. mem_now.used .. "MB "))
-    end
-})
-
--- CPU
-local cpuicon = wibox.widget.imagebox(theme.widget_cpu)
-local cpu = lain.widget.cpu({
-    settings = function()
-        widget:set_markup(markup.font(theme.font, " " .. cpu_now.usage .. "% "))
-    end
-})
-
---[[ Coretemp (lm_sensors, per core)
-local tempwidget = awful.widget.watch({awful.util.shell, '-c', 'sensors | grep Core'}, 30,
-function(widget, stdout)
-    local temps = ""
-    for line in stdout:gmatch("[^\r\n]+") do
-        temps = temps .. line:match("+(%d+).*°C")  .. "° " -- in Celsius
-    end
-    widget:set_markup(markup.font(theme.font, " " .. temps))
-end)
---]]
--- Coretemp (lain, average)
-local temp = lain.widget.temp({
-    settings = function()
-        widget:set_markup(markup.font(theme.font, " " .. coretemp_now .. "°C "))
-    end
-})
---]]
-local tempicon = wibox.widget.imagebox(theme.widget_temp)
-
 --[[ Weather
 https://openweathermap.org/
 Type in the name of your city
@@ -282,7 +206,7 @@ Copy/paste the city code in the URL to this file in city_id
 local weathericon = wibox.widget.imagebox(theme.widget_weather)
 theme.weather = lain.widget.weather({
     city_id = 8133798, -- placeholder (Belgium)
-    notification_preset = { font = "Noto Sans Regular 3", fg = theme.fg_normal },
+    notification_preset = { font = "Noto Sans Regular 8", fg = theme.fg_normal },
     weather_na_markup = markup.fontfg(theme.font, "#FEFEFE", "N/A "),
     settings = function()
         descr = weather_now["weather"][1]["description"]:lower()
@@ -291,17 +215,6 @@ theme.weather = lain.widget.weather({
     end
 })
 
--- / fs
---local fsicon = wibox.widget.imagebox(theme.widget_hdd)
---[[ commented because it needs Gio/Glib >= 2.54
-theme.fs = lain.widget.fs({
-    notification_preset = { fg = theme.fg_normal, bg = theme.bg_normal, font = "Noto Sans Mono Medium 10" },
-    settings = function()
-        local fsp = string.format(" %3.2f %s ", fs_now["/"].free, fs_now["/"].units)
-        widget:set_markup(markup.font(theme.font, fsp))
-    end
-})
---]]
 
 
 local systray = wibox.widget.systray()
@@ -324,14 +237,6 @@ theme.volume = lain.widget.alsa({
         widget:set_markup(markup.font(theme.font, " " .. volume_now.level .. "% "))
     end
 })
-
--- -- Net
--- local neticon = wibox.widget.imagebox(theme.widget_net)
--- local net = lain.widget.net({
---     settings = function()
---         widget:set_markup(markup.fontfg(theme.font, "#FEFEFE", " " .. net_now.received .. " ↓↑ " .. net_now.sent .. " "))
---     end
--- })
 
 
 -- Separators
@@ -405,7 +310,7 @@ function theme.at_screen_connect(s)
     s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, awful.util.tasklist_buttons)
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s, height = dpi(8), bg = theme.bg_normal, fg = theme.fg_normal })
+    s.mywibox = awful.wibar({ position = "top", screen = s, height = dpi(20), bg = theme.bg_normal, fg = theme.fg_normal })
 
     -- Add widgets to the wibox
     s.mywibox:setup {
@@ -439,9 +344,9 @@ function theme.at_screen_connect(s)
             -- using separators
            wibox.container.background(wibox.container.margin(wibox.widget { volicon, theme.volume.widget, layout = wibox.layout.align.horizontal }, dpi(2), dpi(3)), ""),
            volumewidget,
-            wibox.container.background(wibox.container.margin(wibox.widget { memicon, mem.widget, layout = wibox.layout.align.horizontal }, dpi(2), dpi(3)), ""),
+            --wibox.container.background(wibox.container.margin(wibox.widget { memicon, mem.widget, layout = wibox.layout.align.horizontal }, dpi(2), dpi(3)), ""),
         
-            wibox.container.background(wibox.container.margin(wibox.widget { cpuicon, cpu.widget, layout = wibox.layout.align.horizontal }, dpi(3), dpi(4)), ""),
+            --wibox.container.background(wibox.container.margin(wibox.widget { cpuicon, cpu.widget, layout = wibox.layout.align.horizontal }, dpi(3), dpi(4)), ""),
             
             --wibox.container.background(wibox.container.margin(wibox.widget { tempicon, temp.widget, layout = wibox.layout.align.horizontal }, dpi(4), dpi(4)), "#4B3B51"),
           

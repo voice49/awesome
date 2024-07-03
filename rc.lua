@@ -120,7 +120,7 @@ local modkey1      = "Control"
 
 -- personal variables
 --change these variables if you want
-local browser1          = "google chrome"
+local browser1          = "Brave-browser"
 local browser2          = "firefox"
 local editor            = os.getenv("EDITOR") or "nano"
 local editorgui1        = "code"
@@ -132,7 +132,7 @@ local mediaplayer2      = "rhythmbox"
 local terminal          = "alacritty"
 local soundplayer = "ffplay -nodisp -autoexit " -- The program that will play system sounds
 
-local soundDir = " $HOME/Documents/" -- The directory that has the sound files
+local soundDir = " $HOME/Music/sounds" -- The directory that has the sound files
 
 local startupSound  = soundDir .. "login.oga"
 local shutdownSound = soundDir .. "logout.oga"
@@ -253,7 +253,7 @@ awful.util.mymainmenu = freedesktop.menu.build({
     },
     after = {
         { "Terminal", "alacritty" },
-        { "lock",  "betterlockscreen  -l dimblur"},
+        { "lock",  "sh ~/.config/awesome/lock.sh"},
         { "Log out", function() awesome.quit() end },
         { "Sleep", "systemctl suspend" },
         { "Restart", "systemctl reboot" },
@@ -294,6 +294,7 @@ screen.connect_signal("arrange", function (s)
         end
     end
 end)
+
 -- Create a wibox for each screen and add it
 awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s)
     s.systray = wibox.widget.systray()
@@ -327,9 +328,7 @@ globalkeys = my_table.join(
     --     beautiful.bg_normal, beautiful.fg_normal, beautiful.bg_focus, beautiful.fg_focus))
 	-- end,
     -- Function keys
-    awful.key({ }, "F12", function () awful.util.spawn( "xfce4-terminal --drop-down" ) end,
-        {description = "dropdown terminal" , group = "function keys"}),
-    awful.key({ }, "F12", function () awful.util.spawn( "Tilix --quake " ) end,
+    awful.key({ }, "F12", function () awful.util.spawn( "tilix --quake" ) end,
         {description = "dropdown terminal" , group = "function keys"}),
 
 
@@ -377,8 +376,8 @@ globalkeys = my_table.join(
 
     awful.key({ modkey }, "r", function () awful.util.spawn( "rofi-theme-selector" ) end,
         {description = "rofi theme selector", group = "super"}),
-    awful.key({ modkey }, "t", function () awful.util.spawn( "xfce4-terminal" ) end,
-        {description = "Xfce4-terminal", group = "super"}),
+    awful.key({ modkey }, "t", function () awful.util.spawn( "tilix" ) end,
+        {description = "tilix", group = "super"}),
     awful.key({ modkey }, "v", function () awful.util.spawn( "pavucontrol" ) end,
         {description = "pulseaudio control", group = "super"}),
     --awful.key({ modkey }, "u", function () awful.screen.focused().mypromptbox:run() end,
@@ -616,25 +615,26 @@ globalkeys = my_table.join(
               --{description = "show weather", group = "widgets"}),
 
 
-    -- ALSA volume control
-    --awful.key({ modkey1 }, "Up",
+    -- Key bindings for volume control using wpctl
     awful.key({ }, "XF86AudioRaiseVolume",
         function ()
-            os.execute(string.format("amixer -q set %s 1%%+", beautiful.volume.channel))
-            beautiful.volume.update()
-        end),
-    --awful.key({ modkey1 }, "Down",
+            awful.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+")
+        end,
+        {description = "increase volume", group = "media"}),
+
     awful.key({ }, "XF86AudioLowerVolume",
         function ()
-            os.execute(string.format("amixer -q set %s 1%%-", beautiful.volume.channel))
-            beautiful.volume.update()
-        end),
+            awful.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-")
+        end,
+        {description = "decrease volume", group = "media"}),
+
     awful.key({ }, "XF86AudioMute",
         function ()
-            os.execute(string.format("amixer -q set %s toggle", beautiful.volume.togglechannel or beautiful.volume.channel))
-            beautiful.volume.update()
-        end),
-    
+            awful.spawn("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle")
+        end,
+        {description = "toggle mute", group = "media"}),
+
+
 
     --Media keys supported by vlc, spotify, audacious, xmm2, ...
     awful.key({}, "XF86AudioPlay", function() awful.util.spawn("playerctl play-pause", false) end),
@@ -816,7 +816,7 @@ awful.rules.rules = {
 
     -- Set applications to always map on the tag 1 on screen 1.
     -- find class or role via xprop command
-    { rule = { class = "Google-chrome" },
+    { rule = { class = "Brave-browser" },
       properties = { screen = 1, tag = awful.util.tagnames[1], switchtotag = true  } },
 
     { rule = { class = "Firefox" },
@@ -894,7 +894,7 @@ awful.rules.rules = {
           { rule = { class = "Vlc" },
           properties = { maximized = true } },
 
-    { rule = { class = "Google-chrome" },
+    { rule = { class = "Brave-browser" },
           properties = { maximized = true } },
 
     { rule = { class = "Firefox" },
@@ -947,7 +947,7 @@ awful.rules.rules = {
           "veromix",
           "xtightvncviewer",
           "Tilix",
-          "Xfce4-terminal"},
+          "tilix"},
 
         name = {
           "Event Tester",  -- xev.

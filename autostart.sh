@@ -27,16 +27,11 @@ setxkbmap -layout "us,gr" -option  "grp:alt_shift_toggle"
 xsetroot -cursor_name left_ptr &
 #run sxhkd -c ~/.config/bspwm/sxhkd/sxhkdrc &
 
-
-run nm-applet &
 run pamac-tray &
-run xfce4-power-manager &
 numlockx on &
 #picom --config $HOME/.config/bspwm/picom.conf &
-/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+/usr/lib/polkit-kde-authentication-agent-1 &
 /usr/lib/xfce4/notifyd/xfce4-notifyd &
-run volumeicon &
 #nitrogen --restore &
-run xfce4-clipman &
 #run ffplay -nodisp -autoexit  $HOME/Documents/bell.oga &
 run ckb-next-daemon &
